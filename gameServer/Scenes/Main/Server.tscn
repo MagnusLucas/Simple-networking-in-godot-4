@@ -4,3 +4,7 @@
 
 [node name="Server" type="Node"]
 script = ExtResource("1_uda45")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

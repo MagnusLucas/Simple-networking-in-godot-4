@@ -1,10 +1,11 @@
 extends Node
 
-var network = ENetMultiplayerPeer.new()
+#var network = ENetMultiplayerPeer.new()
+var network = WebSocketMultiplayerPeer.new()
 var ip = "127.0.0.1"
 
 var port = 5000
-
+var url = "ws://" + ip + ":" + str(port)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,9 +14,16 @@ func _ready():
 	fetchLabyrinthSize("res://Client.tscn")
 	pass # Replace with function body.
 
+func _process(_delta):
+	if (network.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED ||
+	network.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTING):
+		network.poll();
+
 func connectToServer():
-	network.create_client(ip, port)
+	#network.create_client(ip, port)
+	network.create_client(url)
 	multiplayer.set_multiplayer_peer(network)
+	#network.connect_to_url(url)
 	
 	print("client created")
 	

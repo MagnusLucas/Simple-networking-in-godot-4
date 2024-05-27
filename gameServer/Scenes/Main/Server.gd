@@ -1,6 +1,7 @@
 extends Node
 
-var network := ENetMultiplayerPeer.new()
+#var network := ENetMultiplayerPeer.new()
+var network := WebSocketMultiplayerPeer.new()
 
 const PORT        = 5000
 const MAX_PLAYERS = 200
@@ -8,9 +9,12 @@ const MAX_PLAYERS = 200
 func _ready():
 	startServer()
 
+func _process(_delta):
+	network.poll()
 
 func startServer():
-	network.create_server(PORT, MAX_PLAYERS)
+	#network.create_server(PORT, MAX_PLAYERS)
+	network.create_server(PORT, "127.0.0.1")
 	multiplayer.set_multiplayer_peer(network)
 	print("Server started")
 	
