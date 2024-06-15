@@ -5,12 +5,17 @@ var network = WebSocketMultiplayerPeer.new()
 var ip = "127.0.0.1"
 
 var port = 5000
-var url = "ws://" + ip + ":" + str(port)
+var url = "wss://" + ip + ":" + str(port)
+
+var label;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	label = Label.new()
+	add_child(label)
 	connectToServer()
 	await get_tree().create_timer(1.0).timeout
+	
 	fetchLabyrinthSize("res://Client.tscn")
 	pass # Replace with function body.
 
@@ -20,11 +25,15 @@ func _process(_delta):
 		network.poll();
 
 func connectToServer():
+	var clientCAS = load("res://serverCAS.crt")
 	#network.create_client(ip, port)
-	network.create_client(url)
+	network.create_client(url, TLSOptions.client_unsafe(clientCAS))
+	
+	
 	multiplayer.set_multiplayer_peer(network)
 	#network.connect_to_url(url)
 	
+	label.text = "client created"
 	print("client created")
 	
 	#https://docs.godotengine.org/en/stable/classes/class_multiplayerapi.html#class-multiplayerapi
@@ -39,11 +48,11 @@ func connectToServer():
 
 func onConnectionFailed():
 	print("connection_failed")
-	#$Label.text = "connection_failed"
+	label.text = "connection_failed"
 	
 func onConnectionSucceeded(_id):
 	print("peer_connected")
-	#$Label.text = "peer_connected"
+	label.text = "peer_connected"
 
 @rpc("any_peer")
 func fetchLabyrinthSize(requester):
@@ -53,6 +62,5 @@ func fetchLabyrinthSize(requester):
 @rpc
 func ReturnLabyrinthSize(dimensions, _requester):
 	print(dimensions)
-	
-	#$Label.text = dimensions
+	label.text = str(dimensions)
 	#instance_from_id(requester_scene)

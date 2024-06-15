@@ -14,7 +14,10 @@ func _process(_delta):
 
 func startServer():
 	#network.create_server(PORT, MAX_PLAYERS)
-	network.create_server(PORT, "127.0.0.1")
+	var serverCert = load("res://serverCAS.crt")
+	var serverKey = load("res://serverKey.key")
+	
+	network.create_server(PORT, "127.0.0.1", TLSOptions.server(serverKey, serverCert))
 	multiplayer.set_multiplayer_peer(network)
 	print("Server started")
 	
@@ -29,6 +32,16 @@ func _client_connected(player_id):
 
 func _client_disconnected(player_id):
 	print("Client disconnected. Booooo; " + str(player_id))
+	
+func crypto_shenanigans():
+	var crypto = Crypto.new()
+	var key = CryptoKey.new()
+	var cert = X509Certificate.new()
+	key = crypto.generate_rsa(4096)
+	cert = crypto.generate_self_signed_certificate(key, "CN=doofenshmirtz.inc, O=Doofenshmirtz.Evil.Incorporated, C=IT")
+	
+	key.save("res://serverKey.key")
+	cert.save("res://serverCAS.crt")
 	
 
 @rpc("any_peer")
