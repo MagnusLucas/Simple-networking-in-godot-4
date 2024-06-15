@@ -34,12 +34,16 @@ func connectToServer():
 	#in my professional opinion the line below (v) should work when uncommented (but it does not)
 	#network.connect("connection_failed", onConnectionFailed)
 	network.connect("peer_connected", onConnectionSucceeded)
+	multiplayer.connection_failed.connect(onConnectionFailed)
+
 
 func onConnectionFailed():
 	print("connection_failed")
+	#$Label.text = "connection_failed"
 	
 func onConnectionSucceeded(_id):
 	print("peer_connected")
+	#$Label.text = "peer_connected"
 
 @rpc("any_peer")
 func fetchLabyrinthSize(requester):
@@ -49,4 +53,6 @@ func fetchLabyrinthSize(requester):
 @rpc
 func ReturnLabyrinthSize(dimensions, _requester):
 	print(dimensions)
+	
+	#$Label.text = dimensions
 	#instance_from_id(requester_scene)

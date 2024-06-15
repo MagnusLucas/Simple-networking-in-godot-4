@@ -4,7 +4,7 @@ extends Node
 var network := WebSocketMultiplayerPeer.new()
 
 const PORT        = 5000
-const MAX_PLAYERS = 200
+#const MAX_PLAYERS = 200
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	startServer()
