@@ -17,7 +17,7 @@ func startServer():
 	var serverCert = load("res://serverCAS.crt")
 	var serverKey = load("res://serverKey.key")
 	
-	network.create_server(PORT, "127.0.0.1", TLSOptions.server(serverKey, serverCert))
+	network.create_server(PORT, "192.168.0.88", TLSOptions.server(serverKey, serverCert))
 	multiplayer.set_multiplayer_peer(network)
 	print("Server started")
 	

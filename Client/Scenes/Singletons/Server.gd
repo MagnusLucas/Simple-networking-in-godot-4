@@ -2,7 +2,7 @@ extends Node
 
 #var network = ENetMultiplayerPeer.new()
 var network = WebSocketMultiplayerPeer.new()
-var ip = "127.0.0.1"
+var ip = "192.168.0.88"
 
 var port = 5000
 var url = "wss://" + ip + ":" + str(port)
